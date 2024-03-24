@@ -1,0 +1,157 @@
+---
+title: "COVID-19 Report"
+author: "Ketki joshi"
+date: "`r Sys.Date()`"
+output: html_document
+params:
+  production: TRUE
+---
+
+#**Introduction**
+
+Coronavirus disease (caused by COVID-19 virus) is an infectious disease and most people infected with the COVID-19 virus will experience mild to moderate respiratory illness and recover without requiring special treatment. Older people are more likely to develop serious illness. Here we will see the descriptive statistics including age, sex, patient type, pneumonia status, and if the patient got admitted to Intensive Care Unit (ICU) of all the COVID-19 patients in tabular format. Furthermore, we will see the graphical representation of  age distribution of COVID-19 patients admitted to ICU.
+
+Selected variables in the dataset:
+
+- AGE : age of the patient (continuous)
+- SEX : sex of the patient (1= female, 2= male)
+- PREGNANT : whether the patient is pregnant or not (1= yes, 2= no, 97 and 99= NA)
+- ICU : Indicates whether the patient had been admitted to an Intensive Care Unit (1= yes, 2= no, 97 and 99= NA)
+- PATIENT_TYPE : type of care the patient received in the unit. (1= returned home, 2= hospitalization.
+- PNEUMONIA : whether the patient already have air sacs inflammation or noT (1= yes, 2= no, 99= NA)
+
+```{r, set-chunk-opts, echo = FALSE, warning = FALSE, eval = params$production}
+library(knitr)
+opts_chunk$set(
+  echo = FALSE, warning = FALSE, message = FALSE
+)
+```
+
+```{r, load-data}
+COVID19 <- read.csv("C:/MPH/SPRING_2024/DATA550/Covid Data.csv", header = TRUE)
+
+#subsetting the dataset
+
+finaldata <- subset(COVID19, select = c(SEX, AGE, PREGNANT, ICU, PATIENT_TYPE, PNEUMONIA) )
+```
+
+``` {r}
+#cleaning the data set
+library(labelled)
+library(gtsummary)
+library(dplyr)
+
+var_label(finaldata) <- list(
+  AGE = "age of the patient",
+  SEX = "sex of the patient",
+  PREGNANT = "pregnancy Status",
+  ICU = "use of Intensive Care Unit",
+  PATIENT_TYPE = "Hospitalized or not",
+  PNEUMONIA ="pneumonia present or not"
+)
+
+#checking variables
+#SEX
+table_SEX <- table(finaldata$SEX)
+
+#AGE
+
+summary_age <- finaldata %>%
+  summarise(
+    Mean = mean(AGE, na.rm = TRUE),
+    Median = median(AGE, na.rm = TRUE),
+    SD = sd(AGE, na.rm = TRUE),
+    Q1 = quantile(AGE, 0.25, na.rm = TRUE),
+    Q3 = quantile(AGE, 0.75, na.rm = TRUE),
+    min = min(AGE, na.rm = TRUE),
+    max = max(AGE, na.rm = TRUE)
+  )
+
+
+#converting data values of 0 and >100 to NA
+finaldata$AGE <- ifelse(finaldata$AGE < 0 | finaldata$AGE > 100, NA, finaldata$AGE)
+
+
+
+#creating categories for age
+finaldata$AGE_CAT <- cut(finaldata$AGE, 
+                         breaks = c(0, 18, 63, 121),
+                         labels = c("0 to 18", "19 to 63", "64 and more"),
+                         include.lowest = TRUE)
+
+
+#PREGNANT
+table_PREGNANT <- table(finaldata$PREGNANT)
+
+
+#Replacing values 97 and 98 with NA
+finaldata$PREGNANT <- ifelse(finaldata$PREGNANT %in% c(97, 98), NA , finaldata$PREGNANT)
+
+
+#ICU
+table_ICU <- table(finaldata$ICU)
+
+#Replacing values 97 and 99 with NA
+finaldata$ICU <- ifelse(finaldata$ICU %in% c(97,99), NA , finaldata$ICU)
+
+
+#PATIENT_TYPE
+table_type <- table(finaldata$PATIENT_TYPE)
+
+
+#PNEUMONIA
+table_pnu <- table(finaldata$PNEUMONIA)
+
+
+#Replacing values 99 with NA
+
+finaldata$PNEUMONIA <- ifelse(finaldata$PNEUMONIA %in% 99, NA , finaldata$PNEUMONIA)
+
+
+```
+
+
+#**Descriptive Statistics**
+
+Characteristics of the `r nrow(data)` COVID-19 patients are displayed in the table below. The selected variables are from the larger COVID-19 database published by the Mexican government.(available on: https://www.kaggle.com/datasets/meirnizri/covid19-dataset)
+
+##**Tabular analysis**
+
+``` {r}
+finaldata |>
+  select("AGE", "SEX", "ICU", "PNEUMONIA", "PREGNANT") |>
+  tbl_summary(by = ICU) |>
+  modify_spanning_header(c("stat_1", "stat_2") ~ "**Use of Intensive Care Unit**") |>
+  add_overall()|>
+  add_p()
+```
+
+
+##**Graphical analysis**
+
+
+This is a  graphical representation of age wise distribution of COVID-19 patients admitted to ICU.
+
+
+```{r, plot-data}
+#| fig.align = "center",
+#| out.width = "700px"
+library(ggplot2)
+
+finaldata <- finaldata %>%
+  filter(!is.na(ICU))
+
+finaldata$ICU <- as.factor(finaldata$ICU)
+
+ggplot(finaldata, aes(x = AGE, fill = ICU)) +
+  geom_histogram(binwidth = 5, position = "dodge", color = "white", alpha = 0.7) +
+  labs(title = "Age Distribution of COVID-19 patients admitted to Intensive Care Unit", x = "Age in years", y = "Frequency", fill = "ICU") + scale_fill_manual(values = c("blue", "pink"), labels = c("ICU", "No ICU")) +
+  theme_minimal()
+```
+
+
+
+
+
+
+
