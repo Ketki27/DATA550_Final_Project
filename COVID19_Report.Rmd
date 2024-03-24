@@ -28,7 +28,7 @@ opts_chunk$set(
 ```
 
 ```{r, load-data}
-COVID19 <- read.csv("C:/MPH/SPRING_2024/DATA550/Covid Data.csv", header = TRUE)
+COVID19 <- read.csv("C:/MPH/SPRING_2024/DATA550/Final_Project/Subset_FINAL.csv", header = TRUE)
 
 #subsetting the dataset
 
