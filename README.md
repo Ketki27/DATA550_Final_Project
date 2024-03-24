@@ -20,6 +20,7 @@ To generate the final report, follow these steps:
 2. Install the necessary dependencies (e.g., R, R packages).
 3. Navigate to the project directory.
 4. Run the following command in your terminal:   make report
+5. The .html report will be created in a folder called "output"
 
 ## Code for Creating the Table and Figure
 
