@@ -27,12 +27,21 @@ opts_chunk$set(
 )
 ```
 
-```{r, load-data}
-COVID19 <- read.csv("C:/MPH/SPRING_2024/DATA550/Final_Project/Subset_FINAL.csv", header = TRUE)
+```{r, here-i-am, include = FALSE}
+
+library("here")
+here::i_am(
+  "COVID19_Report.Rmd"
+)
+
+#read Subset_FINAL.csv from Data directory
+
+COVID19 <- read.csv(here::here("Data", "Subset_FINAL.csv"))
+                           
 
 #subsetting the dataset
 
-finaldata <- subset(COVID19, select = c(SEX, AGE, PREGNANT, ICU, PATIENT_TYPE, PNEUMONIA) )
+finaldata <- subset(COVID19, select = c(SEX, AGE, PREGNANT, ICU, PATIENT_TYPE, PNEUMONIA))
 ```
 
 ``` {r}

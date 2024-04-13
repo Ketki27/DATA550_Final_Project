@@ -18,9 +18,13 @@ To generate the final report, follow these steps:
 
 1. Clone this repository to your local machine.
 2. Install the necessary dependencies (e.g., R, R packages).
+3. Use renv::restore() to restore to reinstall the specific package versions recorded in the lockfile
 3. Navigate to the project directory.
 4. Run the following command in your terminal:   make report
 5. The .html report will be created in a folder called "output"
+
+## Data is in the folder called "Data"
+
 
 ## Code for Creating the Table and Figure
 
