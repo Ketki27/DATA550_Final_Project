@@ -40,3 +40,7 @@ help:
 	@echo "  all          Clean and generate HTML report"
 	@echo "  HTML_FILE    Knit R Markdown to HTML (e.g., make COVID19_Report.html)"
 	
+# DOCKER-ASSOCIATED RULES (rule to run container)
+report:
+    docker run -v "/c/MPH/SPRING_2024/DATA550/Final_Project/report:/project/report" ketki27/project_image
+

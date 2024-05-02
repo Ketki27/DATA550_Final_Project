@@ -32,3 +32,13 @@ The code for creating both the required table and figure is located within the C
 
 - Code for the Table is under the heading "Tabular Analysis"
 - Code for the Figure is under the heading "Graphical Analysis"
+
+## How to Build the Docker Image
+
+To use the pre-built Docker image from Docker Hub, follow these steps:
+
+1. Ensure Docker is installed on your system.
+2. Run the following command in your terminal or command prompt: `docker run -v /c/MPH/SPRING_2024/DATA550/Final_Project/report:/project/report ketki27/project_image`
+
+#To run the Docker container and compile the report, execute the following command:
+make report
