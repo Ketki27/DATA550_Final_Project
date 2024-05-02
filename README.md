@@ -38,7 +38,8 @@ The code for creating both the required table and figure is located within the C
 To use the pre-built Docker image from Docker Hub, follow these steps:
 
 1. Ensure Docker is installed on your system.
-2. Run the following command in your terminal or command prompt: `docker run -v /c/MPH/SPRING_2024/DATA550/Final_Project/report:/project/report ketki27/project_image`
+2. Pull the Docker image from Docker Hub by running the following command:`docker pull ketki27/project_image`
+3. Run the following command in your terminal or command prompt: `docker run -v ketki27/project_image`
 
-#To run the Docker container and compile the report, execute the following command:
+## To run the Docker container and compile the report, execute the following command:
 make report
