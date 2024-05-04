@@ -42,5 +42,5 @@ help:
 	
 # DOCKER-ASSOCIATED RULES (rule to run container)
 report:
-    docker run -v "/c/MPH/SPRING_2024/DATA550/Final_Project/report:/project/report" ketki27/project_image
+    docker run -v ketki27/project_image
 
